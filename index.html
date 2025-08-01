@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Tabela de Preços - Açougue</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #d32f2f;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 2em;
+    }
+
+    .subtitulo {
+      font-size: 1.2em;
+      font-style: italic;
+      margin-top: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 2em;
+    }
+
+    thead {
+      background-color: #ffebee;
+      color: #d32f2f;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #fce4ec;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f8bbd0;
+    }
+
+    .preco {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .imagem {
+      max-height: calc(100vh - 120px);
+      width: auto;
+      display: none;
+      margin: 0 auto;
+    }
+
+    #imagem-container {
+      text-align: center;
+      background-color: black;
+      display: none;
+    }
+
+    #tabela-container {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    MERCADO TIA LENA
+    <div class="subtitulo">Sua satisfação em primeiro lugar!</div>
+  </header>
+
+  <div id="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th>BOVINOS</th>
+          <th class="preco">Preço</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-corpo">
+        <!-- Preenchido pelo JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <div id="imagem-container">
+    <img id="imagem-exibida" class="imagem" src="" alt="Promoção">
+  </div>
+
+  <script>
+    const produtos = [
+      ['Picanha kg', 'R$44,99'],
+      ['Alcatra kg', 'R$39,99'],
+      ['Alcatra c/ Maminha kg', 'R$39,99'],
+      ['Coxão Duro Angus kg', 'R$44,99'],
+      ['Coxão Mole kg', 'R$33,49'],
+      ['Fraldinha Bovina kg', 'R$39,99'],
+      ['Cupim kg', 'R$39,99'],
+      ['Acém Angus kg', 'R$39,99'],
+      ['Filé Mignon kg', 'R$44,99'],
+      ['Paleta Angus s/ Músculo kg', 'R$36,99'],
+      ['Patinho kg', 'R$38,99'],
+      ['Lagarto kg', 'R$42,99'],
+      ['Costela Bovina kg', 'R$29,99'],
+      ['Frango kg', 'R$9,99'],
+      ['Asinha de Frango kg', 'R$12,99'],
+      ['Linguiça Toscana kg', 'R$17,99'],
+      ['Bacon kg', 'R$29,99']
+    ];
+
+    const imagens = [
+      '1.jpg',
+      '2.jpg',
+      '3.jpg'
+    ];
+
+    const itensPorPagina = 8;
+    let paginaAtual = 0;
+    let mostrandoImagens = false;
+
+    function mostrarPagina(pagina) {
+      const tbody = document.getElementById('tabela-corpo');
+      tbody.innerHTML = '';
+      const inicio = pagina * itensPorPagina;
+      const fim = inicio + itensPorPagina;
+      const itens = produtos.slice(inicio, fim);
+
+      for (const [nome, preco] of itens) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${nome}</td><td class="preco">${preco}</td>`;
+        tbody.appendChild(row);
+      }
+    }
+
+    function mostrarImagem(index) {
+      document.getElementById('tabela-container').style.display = 'none';
+      document.getElementById('imagem-container').style.display = 'block';
+
+      const img = document.getElementById('imagem-exibida');
+      img.src = imagens[index];
+      img.style.display = 'block';
+    }
+
+    function ocultarImagens() {
+      document.getElementById('imagem-container').style.display = 'none';
+      document.getElementById('tabela-container').style.display = 'block';
+    }
+
+    function iniciarRotacao() {
+      if (!mostrandoImagens) {
+        mostrarPagina(paginaAtual);
+        paginaAtual++;
+
+        if (paginaAtual * itensPorPagina >= produtos.length) {
+          mostrandoImagens = true;
+          paginaAtual = 0;
+
+          let imagemIndex = 0;
+          mostrarImagem(imagemIndex);
+
+          const intervaloImagem = setInterval(() => {
+            imagemIndex++;
+            if (imagemIndex >= imagens.length) {
+              clearInterval(intervaloImagem);
+              mostrandoImagens = false;
+              ocultarImagens();
+              iniciarRotacao(); // reinicia
+            } else {
+              mostrarImagem(imagemIndex);
+            }
+          }, 5000);
+        }
+      }
+    }
+
+    // Início
+    mostrarPagina(paginaAtual);
+    paginaAtual++;
+
+    setInterval(() => {
+      if (!mostrandoImagens) {
+        iniciarRotacao();
+      }
+    }, 10000);
+  </script>
+
+</body>
+</html>
