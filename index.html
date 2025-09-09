@@ -69,15 +69,17 @@
       text-align:left;
       background:#fff;
       border:2px solid transparent;
+      cursor:pointer;
     }
     .cell.empty{
       background:transparent;
       box-shadow:none;
       pointer-events:none;
       border:none;
+      cursor:default;
     }
     .day-num{ font-weight:600; font-size:14px; color:var(--text); }
-    .cell.day:hover{ background:#f5f7fb; cursor:pointer; transform:translateY(-2px); }
+    .cell.day:hover{ background:#f5f7fb; transform:translateY(-2px); }
     .cell.today{
       background:var(--today);
       color:var(--text);
@@ -108,13 +110,10 @@
       gap:12px;
       width:100%;
     }
+    .card-event.selected{ background:#f0f8ff; } /* destaque do selecionado */
     .card-event .title-ev{ font-weight:600; font-size:14px; }
     .card-event .value-ev{ color:var(--accent); font-weight:700; }
     .no-event{ color:var(--muted); padding:8px 0; }
-    .totals{
-      margin-top:10px;
-      font-weight:600;
-    }
     @media (max-width:380px){
       .cell{ min-height:54px; padding:6px; }
       .day-name{ font-size:11px; }
@@ -138,50 +137,60 @@
     .legend .medium{ background:#28a745; }
     .legend .high{ background:#dc3545; }
     .legend .no-event{ background:#ccc; }
-    .card-event.selected{
-      background:#f0f0f0;
-      border:2px solid var(--accent);
+    .totals{
+      margin-top:8px;
+      font-weight:600;
+      display:flex;
+      justify-content:space-between;
     }
   </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <div class="header">
-      <button class="nav-btn" id="prevBtn" type="button">◀</button>
-      <div class="month-title" id="monthTitle">—</div>
-      <button class="nav-btn" id="nextBtn" type="button">▶</button>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <button class="nav-btn" id="prevBtn" type="button">◀</button>
+        <div class="month-title" id="monthTitle">—</div>
+        <button class="nav-btn" id="nextBtn" type="button">▶</button>
+      </div>
+      <div class="grid" id="calendarGrid"></div>
     </div>
-    <div class="grid" id="calendarGrid"></div>
-  </div>
 
-  <div class="legend">
-    <div><span class="dot low"></span> Até R$ 5.000</div>
-    <div><span class="dot medium"></span> R$ 5.001 a R$ 10.000</div>
-    <div><span class="dot high"></span> Acima de R$ 10.000</div>
-    <div><span class="dot no-event"></span> Sem boletos</div>
-  </div>
+    <div class="legend">
+      <div><span class="dot low"></span> Até R$ 5.000</div>
+      <div><span class="dot medium"></span> R$ 5.001 a R$ 10.000</div>
+      <div><span class="dot high"></span> Acima de R$ 10.000</div>
+      <div><span class="dot no-event"></span> Sem boletos</div>
+    </div>
 
-  <div class="totals" id="totals">
-    Semana: R$ 0,00 | Geral: R$ 0,00
-  </div>
+    <div class="totals">
+      <div id="totalWeek">Soma semana corrente: R$ 0,00</div>
+      <div id="totalAll">Soma geral: R$ 0,00</div>
+    </div>
 
-  <div class="events">
-    <div class="list" id="eventList">
-      <div class="no-event">Selecione um dia para ver os boletos.</div>
+    <div class="events">
+      <div class="list" id="eventList">
+        <div class="no-event">Selecione um dia para ver os boletos.</div>
+      </div>
     </div>
   </div>
-</div>
 
 <script>
 let eventsData = {};
 
-fetch('boletos.json')
-  .then(resp => resp.json())
+fetch('./boletos.json')
+  .then(response => {
+    if(!response.ok) throw new Error('Erro ao carregar JSON');
+    return response.json();
+  })
   .then(data => {
     eventsData = data;
     renderCalendar(viewMonth, viewYear);
-    updateTotals(); // inicializa totais gerais
+    updateTotals();
+  })
+  .catch(err => {
+    console.error(err);
+    document.getElementById('calendarGrid').innerHTML = '<p style="text-align:center;color:red;">Não foi possível carregar os boletos.</p>';
   });
 
 function formatDateKey(y,m,d){
@@ -189,33 +198,30 @@ function formatDateKey(y,m,d){
 }
 
 function parseBRLToNumber(txt){
-  if (typeof txt === "number") return txt;
-  let s = String(txt).trim();
-  s = s.replace(/^R\$\s*/i, ""); 
-  s = s.replace(/[^\d,.-]/g, "");
-  if (s.includes(",") && s.includes(".")) s = s.replace(/\./g,"").replace(",",".");
-  else if(s.includes(",")) s = s.replace(",",".");
+  if(typeof txt==="number") return txt;
+  let s = String(txt).trim().replace(/^R\$\s*/i,"").replace(/[^\d,.-]/g,"");
+  if(s.includes(",") && s.includes(".")) s = s.replace(/\./g,"").replace(",", ".");
+  else if(s.includes(",")) s = s.replace(",", ".");
   const n = Number(s);
   return isNaN(n)?0:n;
 }
 
 function sumDay(events){
   return events.reduce((acc,ev)=>{
-    const n = parseBRLToNumber(ev.value);
-    return acc + (isNaN(n)?0:n);
+    return acc + parseBRLToNumber(ev.value);
   },0);
 }
 
 const today = new Date();
 let viewMonth = today.getMonth();
-let viewYear  = today.getFullYear();
+let viewYear = today.getFullYear();
 const monthNames = ["janeiro","fevereiro","março","abril","maio","junho",
                     "julho","agosto","setembro","outubro","novembro","dezembro"];
 const grid = document.getElementById('calendarGrid');
 const monthTitle = document.getElementById('monthTitle');
 const eventList = document.getElementById('eventList');
-const totalsEl = document.getElementById('totals');
-
+const totalWeekEl = document.getElementById('totalWeek');
+const totalAllEl = document.getElementById('totalAll');
 let selectedCard = null;
 
 function renderCalendar(month, year){
@@ -227,39 +233,46 @@ function renderCalendar(month, year){
     el.textContent=d;
     grid.appendChild(el);
   });
-  const firstDayIndex = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month+1,0).getDate();
+
+  const firstDayIndex = new Date(year,month,1).getDay();
+  const daysInMonth = new Date(year,month+1,0).getDate();
+
   for(let i=0;i<firstDayIndex;i++){
-    const empty = document.createElement('div');
+    const empty=document.createElement('div');
     empty.className='cell empty';
     grid.appendChild(empty);
   }
-  for(let d=1; d<=daysInMonth; d++){
-    const cell = document.createElement('div');
+
+  for(let d=1;d<=daysInMonth;d++){
+    const cell=document.createElement('div');
     cell.className='cell day';
-    const key = formatDateKey(year, month+1, d);
-    const num = document.createElement('div');
+    const key=formatDateKey(year,month+1,d);
+    const num=document.createElement('div');
     num.className='day-num';
-    num.textContent = d;
-    const events = eventsData[key] || [];
-    const total = sumDay(events);
+    num.textContent=d;
+
+    const events=eventsData[key]||[];
+    const total=sumDay(events);
 
     if(events.length){
-      if(total <=5000) cell.style.borderColor="#007bff";
+      if(total<=5000) cell.style.borderColor="#007bff";
       else if(total<=10000) cell.style.borderColor="#28a745";
       else cell.style.borderColor="#dc3545";
     } else cell.style.borderColor="#ccc";
 
-    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear())
+    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()){
       cell.classList.add('today');
+    }
 
     cell.appendChild(num);
-    cell.addEventListener('click', ()=> showEvents(key, new Date(year,month,d)));
+    cell.addEventListener('click', ()=>showEvents(key, `${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`));
     grid.appendChild(cell);
   }
+
   const remainder = grid.children.length % 7;
   if(remainder!==0){
-    for(let i=0;i<7-remainder;i++){
+    const need=7-remainder;
+    for(let i=0;i<need;i++){
       const e=document.createElement('div');
       e.className='cell empty';
       grid.appendChild(e);
@@ -267,24 +280,20 @@ function renderCalendar(month, year){
   }
 }
 
-function showEvents(dateKey, clickedDate){
-  eventList.innerHTML="";
-  const events = eventsData[dateKey] || [];
-  const totalDay = sumDay(events);
+function showEvents(dateKey, prettyDate){
+  eventList.innerHTML = "";
+  const events = eventsData[dateKey]||[];
+  const total = sumDay(events);
 
   const header = document.createElement('div');
   header.className='no-event';
-  if(events.length){
-    header.textContent=`Boletos do dia - Total: ${totalDay.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
-  } else {
-    header.textContent=`Boletos do dia - Total: ${totalDay.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})} (Nenhum boleto)`;
-  }
+  header.textContent = `Boletos em ${prettyDate} - Total: ${total.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
   eventList.appendChild(header);
 
   if(!events.length) return;
 
   events.forEach(ev=>{
-    const card = document.createElement('div');
+    const card=document.createElement('div');
     card.className='card-event';
     card.innerHTML=`
       <div class="title-ev">${ev.title}</div>
@@ -297,41 +306,45 @@ function showEvents(dateKey, clickedDate){
     });
     eventList.appendChild(card);
   });
-
-  updateTotals(clickedDate);
 }
 
-function updateTotals(clickedDate){
-  // Soma geral
+function getWeekRange(date){
+  const day = date.getDay();
+  const offset = (day === 0) ? -6 : 2 - day; // terça=2 é início da semana
+  const start = new Date(date);
+  start.setDate(date.getDate()+offset);
+  const end = new Date(start);
+  end.setDate(start.getDate()+6);
+  return [start,end];
+}
+
+function updateTotals(){
+  // soma geral
   let totalAll = 0;
-  for(const key in eventsData){
-    totalAll += sumDay(eventsData[key]);
-  }
+  Object.values(eventsData).forEach(dayArr=>{
+    totalAll += sumDay(dayArr);
+  });
+  totalAllEl.textContent = `Soma geral: ${totalAll.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
 
-  // Soma semana
-  if(!clickedDate) clickedDate = today;
-  const startWeek = new Date(clickedDate);
-  const offset = (clickedDate.getDay()+5)%7; // dias para voltar até terça
-  startWeek.setDate(clickedDate.getDate()-offset);
-  const endWeek = new Date(startWeek);
-  endWeek.setDate(startWeek.getDate()+6);
-
+  // soma semana corrente (terça a próxima segunda)
+  const [weekStart,weekEnd]=getWeekRange(today);
   let totalWeek = 0;
-  for(let d=new Date(startWeek); d<=endWeek; d.setDate(d.getDate()+1)){
-    const key = formatDateKey(d.getFullYear(), d.getMonth()+1, d.getDate());
-    totalWeek += sumDay(eventsData[key] || []);
+  let dt= new Date(weekStart);
+  while(dt<=weekEnd){
+    const key=formatDateKey(dt.getFullYear(),dt.getMonth()+1,dt.getDate());
+    totalWeek += sumDay(eventsData[key]||[]);
+    dt.setDate(dt.getDate()+1);
   }
-
-  totalsEl.textContent = `Semana: ${totalWeek.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})} | Geral: ${totalAll.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
+  totalWeekEl.textContent = `Soma semana corrente: ${totalWeek.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
 }
 
 document.getElementById('prevBtn').addEventListener('click', ()=>{
-  viewMonth--; if(viewMonth<0){ viewMonth=11; viewYear--;}
-  renderCalendar(viewMonth,viewYear);
+  viewMonth--; if(viewMonth<0){ viewMonth=11; viewYear--; }
+  renderCalendar(viewMonth, viewYear);
 });
 document.getElementById('nextBtn').addEventListener('click', ()=>{
-  viewMonth++; if(viewMonth>11){ viewMonth=0; viewYear++;}
-  renderCalendar(viewMonth,viewYear);
+  viewMonth++; if(viewMonth>11){ viewMonth=0; viewYear++; }
+  renderCalendar(viewMonth, viewYear);
 });
 </script>
 </body>
