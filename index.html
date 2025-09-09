@@ -176,7 +176,7 @@
 <script>
 let eventsData = {};
 
-fetch('boletos.json')
+fetch('./boletos.json')
   .then(resp => resp.json())
   .then(data => {
     eventsData = data;
