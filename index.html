@@ -1,197 +1,338 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Tabela de Preços - Açougue</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calendário Dinâmico</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+    :root{
+      --card-bg:#fff;
+      --accent:#ff4d6d;
+      --today:#eaeaea;
+      --text:#222;
+      --muted:#888;
     }
-
-    header {
-      background-color: #d32f2f;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      font-size: 2em;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, Arial;
+      background:#f3f6fb;
+      color:var(--text);
+      display:flex;
+      justify-content:center;
+      padding:20px;
     }
-
-    .subtitulo {
-      font-size: 1.2em;
-      font-style: italic;
-      margin-top: 5px;
+    html { overflow-y: scroll; }
+    .wrap{ width:100%; max-width:420px; }
+    .card{
+      background:var(--card-bg);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:0 8px 24px rgba(20,30,50,0.08);
     }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 2em;
+    .header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:12px;
     }
-
-    thead {
-      background-color: #ffebee;
-      color: #d32f2f;
+    .nav-btn{
+      background:transparent;
+      border:none;
+      font-size:18px;
+      padding:8px;
+      border-radius:8px;
+      cursor:pointer;
     }
-
-    th, td {
-      padding: 15px;
-      text-align: left;
+    .month-title{ font-weight:600; text-transform:capitalize; }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:8px;
+      align-items:stretch;
     }
-
-    tbody tr:nth-child(odd) {
-      background-color: #fce4ec;
+    .day-name{
+      font-size:12px;
+      color:var(--muted);
+      text-align:center;
+      padding:4px 2px;
     }
-
-    tbody tr:nth-child(even) {
-      background-color: #f8bbd0;
+    .cell{
+      min-height:58px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      padding:8px;
+      border-radius:10px;
+      transition:background .15s, transform .08s;
+      text-align:left;
+      background:#fff;
+      border:2px solid transparent;
     }
-
-    .preco {
-      text-align: right;
-      font-weight: bold;
+    .cell.empty{
+      background:transparent;
+      box-shadow:none;
+      pointer-events:none;
+      border:none;
     }
-
-    .imagem {
-      max-height: calc(100vh - 120px);
-      width: auto;
-      display: none;
-      margin: 0 auto;
+    .day-num{ font-weight:600; font-size:14px; color:var(--text); }
+    .cell.day:hover{ background:#f5f7fb; cursor:pointer; transform:translateY(-2px); }
+    .cell.today{
+      background:var(--today);
+      color:var(--text);
+      font-weight:700;
     }
-
-    #imagem-container {
-      text-align: center;
-      background-color: black;
-      display: none;
+    .events{
+      margin-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
     }
-
-    #tabela-container {
-      display: block;
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-height:120px;
+      max-height:300px;
+      overflow-y:auto;
+    }
+    .card-event{
+      background:#fff;
+      border-radius:10px;
+      padding:10px;
+      box-shadow:0 6px 18px rgba(20,30,50,0.04);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      width:100%;
+    }
+    .card-event .title-ev{ font-weight:600; font-size:14px; }
+    .card-event .value-ev{ color:var(--accent); font-weight:700; }
+    .no-event{ color:var(--muted); padding:8px 0; }
+    .totals{
+      margin-top:10px;
+      font-weight:600;
+    }
+    @media (max-width:380px){
+      .cell{ min-height:54px; padding:6px; }
+      .day-name{ font-size:11px; }
+    }
+    .legend{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:6px;
+      font-size:12px;
+      color:var(--text);
+    }
+    .legend .dot{
+      display:inline-block;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      margin-right:6px;
+    }
+    .legend .low{ background:#007bff; }
+    .legend .medium{ background:#28a745; }
+    .legend .high{ background:#dc3545; }
+    .legend .no-event{ background:#ccc; }
+    .card-event.selected{
+      background:#f0f0f0;
+      border:2px solid var(--accent);
     }
   </style>
 </head>
 <body>
-
-  <header>
-    MERCADO TIA LENA
-    <div class="subtitulo">Sua satisfação em primeiro lugar!</div>
-  </header>
-
-  <div id="tabela-container">
-    <table>
-      <thead>
-        <tr>
-          <th>BOVINOS</th>
-          <th class="preco">Preço</th>
-        </tr>
-      </thead>
-      <tbody id="tabela-corpo">
-        <!-- Preenchido pelo JavaScript -->
-      </tbody>
-    </table>
+<div class="wrap">
+  <div class="card">
+    <div class="header">
+      <button class="nav-btn" id="prevBtn" type="button">◀</button>
+      <div class="month-title" id="monthTitle">—</div>
+      <button class="nav-btn" id="nextBtn" type="button">▶</button>
+    </div>
+    <div class="grid" id="calendarGrid"></div>
   </div>
 
-  <div id="imagem-container">
-    <img id="imagem-exibida" class="imagem" src="" alt="Promoção">
+  <div class="legend">
+    <div><span class="dot low"></span> Até R$ 5.000</div>
+    <div><span class="dot medium"></span> R$ 5.001 a R$ 10.000</div>
+    <div><span class="dot high"></span> Acima de R$ 10.000</div>
+    <div><span class="dot no-event"></span> Sem boletos</div>
   </div>
 
-  <script>
-    const produtos = [
-      ['Picanha kg', 'R$44,99'],
-      ['Alcatra kg', 'R$39,99'],
-      ['Alcatra c/ Maminha kg', 'R$39,99'],
-      ['Coxão Duro Angus kg', 'R$44,99'],
-      ['Coxão Mole kg', 'R$33,49'],
-      ['Fraldinha Bovina kg', 'R$39,99'],
-      ['Cupim kg', 'R$39,99'],
-      ['Acém Angus kg', 'R$39,99'],
-      ['Filé Mignon kg', 'R$44,99'],
-      ['Paleta Angus s/ Músculo kg', 'R$36,99'],
-      ['Patinho kg', 'R$38,99'],
-      ['Lagarto kg', 'R$42,99'],
-      ['Costela Bovina kg', 'R$29,99'],
-      ['Frango kg', 'R$9,99'],
-      ['Asinha de Frango kg', 'R$12,99'],
-      ['Linguiça Toscana kg', 'R$17,99'],
-      ['Bacon kg', 'R$29,99']
-    ];
+  <div class="totals" id="totals">
+    Semana: R$ 0,00 | Geral: R$ 0,00
+  </div>
 
-    const imagens = [
-      '1.jpg',
-      '2.jpg',
-      '3.jpg'
-    ];
+  <div class="events">
+    <div class="list" id="eventList">
+      <div class="no-event">Selecione um dia para ver os boletos.</div>
+    </div>
+  </div>
+</div>
 
-    const itensPorPagina = 8;
-    let paginaAtual = 0;
-    let mostrandoImagens = false;
+<script>
+let eventsData = {};
 
-    function mostrarPagina(pagina) {
-      const tbody = document.getElementById('tabela-corpo');
-      tbody.innerHTML = '';
-      const inicio = pagina * itensPorPagina;
-      const fim = inicio + itensPorPagina;
-      const itens = produtos.slice(inicio, fim);
+fetch('boletos.json')
+  .then(resp => resp.json())
+  .then(data => {
+    eventsData = data;
+    renderCalendar(viewMonth, viewYear);
+    updateTotals(); // inicializa totais gerais
+  });
 
-      for (const [nome, preco] of itens) {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${nome}</td><td class="preco">${preco}</td>`;
-        tbody.appendChild(row);
-      }
+function formatDateKey(y,m,d){
+  return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+}
+
+function parseBRLToNumber(txt){
+  if (typeof txt === "number") return txt;
+  let s = String(txt).trim();
+  s = s.replace(/^R\$\s*/i, ""); 
+  s = s.replace(/[^\d,.-]/g, "");
+  if (s.includes(",") && s.includes(".")) s = s.replace(/\./g,"").replace(",",".");
+  else if(s.includes(",")) s = s.replace(",",".");
+  const n = Number(s);
+  return isNaN(n)?0:n;
+}
+
+function sumDay(events){
+  return events.reduce((acc,ev)=>{
+    const n = parseBRLToNumber(ev.value);
+    return acc + (isNaN(n)?0:n);
+  },0);
+}
+
+const today = new Date();
+let viewMonth = today.getMonth();
+let viewYear  = today.getFullYear();
+const monthNames = ["janeiro","fevereiro","março","abril","maio","junho",
+                    "julho","agosto","setembro","outubro","novembro","dezembro"];
+const grid = document.getElementById('calendarGrid');
+const monthTitle = document.getElementById('monthTitle');
+const eventList = document.getElementById('eventList');
+const totalsEl = document.getElementById('totals');
+
+let selectedCard = null;
+
+function renderCalendar(month, year){
+  grid.innerHTML = "";
+  monthTitle.textContent = `${monthNames[month]} ${year}`;
+  ['D','S','T','Q','Q','S','S'].forEach(d=>{
+    const el = document.createElement('div');
+    el.className='day-name';
+    el.textContent=d;
+    grid.appendChild(el);
+  });
+  const firstDayIndex = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1,0).getDate();
+  for(let i=0;i<firstDayIndex;i++){
+    const empty = document.createElement('div');
+    empty.className='cell empty';
+    grid.appendChild(empty);
+  }
+  for(let d=1; d<=daysInMonth; d++){
+    const cell = document.createElement('div');
+    cell.className='cell day';
+    const key = formatDateKey(year, month+1, d);
+    const num = document.createElement('div');
+    num.className='day-num';
+    num.textContent = d;
+    const events = eventsData[key] || [];
+    const total = sumDay(events);
+
+    if(events.length){
+      if(total <=5000) cell.style.borderColor="#007bff";
+      else if(total<=10000) cell.style.borderColor="#28a745";
+      else cell.style.borderColor="#dc3545";
+    } else cell.style.borderColor="#ccc";
+
+    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear())
+      cell.classList.add('today');
+
+    cell.appendChild(num);
+    cell.addEventListener('click', ()=> showEvents(key, new Date(year,month,d)));
+    grid.appendChild(cell);
+  }
+  const remainder = grid.children.length % 7;
+  if(remainder!==0){
+    for(let i=0;i<7-remainder;i++){
+      const e=document.createElement('div');
+      e.className='cell empty';
+      grid.appendChild(e);
     }
+  }
+}
 
-    function mostrarImagem(index) {
-      document.getElementById('tabela-container').style.display = 'none';
-      document.getElementById('imagem-container').style.display = 'block';
+function showEvents(dateKey, clickedDate){
+  eventList.innerHTML="";
+  const events = eventsData[dateKey] || [];
+  const totalDay = sumDay(events);
 
-      const img = document.getElementById('imagem-exibida');
-      img.src = imagens[index];
-      img.style.display = 'block';
-    }
+  const header = document.createElement('div');
+  header.className='no-event';
+  if(events.length){
+    header.textContent=`Boletos do dia - Total: ${totalDay.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
+  } else {
+    header.textContent=`Boletos do dia - Total: ${totalDay.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})} (Nenhum boleto)`;
+  }
+  eventList.appendChild(header);
 
-    function ocultarImagens() {
-      document.getElementById('imagem-container').style.display = 'none';
-      document.getElementById('tabela-container').style.display = 'block';
-    }
+  if(!events.length) return;
 
-    function iniciarRotacao() {
-      if (!mostrandoImagens) {
-        mostrarPagina(paginaAtual);
-        paginaAtual++;
+  events.forEach(ev=>{
+    const card = document.createElement('div');
+    card.className='card-event';
+    card.innerHTML=`
+      <div class="title-ev">${ev.title}</div>
+      <div class="value-ev">${parseBRLToNumber(ev.value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}</div>
+    `;
+    card.addEventListener('click', ()=>{
+      if(selectedCard) selectedCard.classList.remove('selected');
+      card.classList.add('selected');
+      selectedCard = card;
+    });
+    eventList.appendChild(card);
+  });
 
-        if (paginaAtual * itensPorPagina >= produtos.length) {
-          mostrandoImagens = true;
-          paginaAtual = 0;
+  updateTotals(clickedDate);
+}
 
-          let imagemIndex = 0;
-          mostrarImagem(imagemIndex);
+function updateTotals(clickedDate){
+  // Soma geral
+  let totalAll = 0;
+  for(const key in eventsData){
+    totalAll += sumDay(eventsData[key]);
+  }
 
-          const intervaloImagem = setInterval(() => {
-            imagemIndex++;
-            if (imagemIndex >= imagens.length) {
-              clearInterval(intervaloImagem);
-              mostrandoImagens = false;
-              ocultarImagens();
-              iniciarRotacao(); // reinicia
-            } else {
-              mostrarImagem(imagemIndex);
-            }
-          }, 5000);
-        }
-      }
-    }
+  // Soma semana
+  if(!clickedDate) clickedDate = today;
+  const startWeek = new Date(clickedDate);
+  const offset = (clickedDate.getDay()+5)%7; // dias para voltar até terça
+  startWeek.setDate(clickedDate.getDate()-offset);
+  const endWeek = new Date(startWeek);
+  endWeek.setDate(startWeek.getDate()+6);
 
-    // Início
-    mostrarPagina(paginaAtual);
-    paginaAtual++;
+  let totalWeek = 0;
+  for(let d=new Date(startWeek); d<=endWeek; d.setDate(d.getDate()+1)){
+    const key = formatDateKey(d.getFullYear(), d.getMonth()+1, d.getDate());
+    totalWeek += sumDay(eventsData[key] || []);
+  }
 
-    setInterval(() => {
-      if (!mostrandoImagens) {
-        iniciarRotacao();
-      }
-    }, 10000);
-  </script>
+  totalsEl.textContent = `Semana: ${totalWeek.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})} | Geral: ${totalAll.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
+}
 
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+  viewMonth--; if(viewMonth<0){ viewMonth=11; viewYear--;}
+  renderCalendar(viewMonth,viewYear);
+});
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  viewMonth++; if(viewMonth>11){ viewMonth=0; viewYear++;}
+  renderCalendar(viewMonth,viewYear);
+});
+</script>
 </body>
 </html>
