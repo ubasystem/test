@@ -37,8 +37,16 @@
       "value": "R$ 562,07"
     },
     {
+      "title": "PANCO",
+      "value": "R$ 378,65"
+    },
+    {
       "title": "COMPRE FACIL",
       "value": "R$ 361,02"
+    },
+    {
+      "title": "PANCO",
+      "value": "R$ 308,00"
     },
     {
       "title": "PAES KIM MAGALHAES",
@@ -58,6 +66,10 @@
     }
   ],
   "2025-09-17": [
+    {
+      "title": "COMERCIAL ESPERANCA",
+      "value": "R$ 1.007,61"
+    },
     {
       "title": "JOTACE",
       "value": "R$ 978,00"
@@ -123,6 +135,9 @@
     {
       "title": "ACOUGUE",
       "value": "R$ 1.357,46"
+    },{
+      "title": "ULTRAGAZ",
+      "value": "R$ 1.339,04"
     },
     {
       "title": "ZARAGOZA",
@@ -139,6 +154,10 @@
     {
       "title": "FONSECA & FILHO CARNES",
       "value": "R$ 999,52"
+    },
+    {
+      "title": "SDB BATE FORTE",
+      "value": "R$ 715,03"
     },
     {
       "title": "FONSECA & FILHO CARNES",
@@ -175,6 +194,10 @@
       "value": "R$ 1.148,62"
     },
     {
+      "title": "JTI CIGARROS",
+      "value": "R$ 1.014,90"
+    },
+    {
       "title": "JAMPAC",
       "value": "R$ 572,73"
     },
@@ -193,15 +216,27 @@
   ],
   "2025-09-20": [
     {
+      "title": "BRF",
+      "value": "R$ 326,68"
+    },
+    {
       "title": "SISTEMA ATHOS",
       "value": "R$ 289,03"
     },
     {
       "title": "VIGOR",
       "value": "R$ 243,89"
+    },
+    {
+      "title": "BRF",
+      "value": "R$ 229,05"
     }
   ],
   "2025-09-22": [
+    {
+      "title": "ZANCHETTA",
+      "value": "R$ 1.578,00"
+    },
     {
       "title": "BRF",
       "value": "R$ 1.510,03"
@@ -209,6 +244,10 @@
     {
       "title": "UNIVALE",
       "value": "R$ 412,34"
+    },
+    {
+      "title": "ARAUJO EMBALAGENS",
+      "value": "R$ 379,09"
     },
     {
       "title": "BRF",
@@ -220,6 +259,10 @@
     }
   ],
   "2025-09-23": [
+    {
+      "title": "ZANCHETTA",
+      "value": "R$ 3.136,73"
+    },
     {
       "title": "HORT FRUIT",
       "value": "R$ 2.314,00"
@@ -237,14 +280,46 @@
       "value": "R$ 1.225,00"
     },
     {
+      "title": "TIROL",
+      "value": "R$ 1.068,02"
+    },
+    {
       "title": "FRIGOESTRELA",
       "value": "R$ 1.001,03"
+    },
+    {
+      "title": "ACAI MIX",
+      "value": "R$ 512,43"
+    },
+    {
+      "title": "CASA DO CONFEITEIRO",
+      "value": "R$ 326,48"
+    },
+    {
+      "title": "BEATRIZ RIBEIRO JF DOCES",
+      "value": "R$ 315,82"
+    },
+    {
+      "title": "PAES KIM MAGALHAES",
+      "value": "R$ 294,93"
     }
   ],
   "2025-09-24": [
     {
+      "title": "COMERCIAL ESPERANCA",
+      "value": "R$ 1.007,61"
+    },
+    {
+      "title": "SEARA",
+      "value": "R$ 909,09"
+    },
+    {
       "title": "EDY ALIMENTOS",
       "value": "R$ 737,81"
+    },
+    {
+      "title": "SABOROSA",
+      "value": "R$ 528,80"
     },
     {
       "title": "MINERVA",
@@ -297,6 +372,10 @@
       "value": "R$ 872,36"
     },
     {
+      "title": "ZARAGOZA",
+      "value": "R$ 857,24"
+    },
+    {
       "title": "PRODUTOS NATURAIS MILTON",
       "value": "R$ 645,09"
     },
@@ -307,6 +386,10 @@
     {
       "title": "ROMMAC DISTRIB.",
       "value": "R$ 328,02"
+    },
+    {
+      "title": "RENOVA(ACETONA,CREME DE LEITE)",
+      "value": "R$ 234,71"
     }
   ],
   "2025-09-26": [
@@ -321,12 +404,28 @@
     {
       "title": "SERGIO TADEU",
       "value": "R$ 289,33"
+    },
+    {
+      "title": "TOPSERVICE",
+      "value": "R$ 282,56"
+    },
+    {
+      "title": "FONSECA SUSPIRO",
+      "value": "R$ 274,00"
     }
   ],
   "2025-09-27": [
     {
       "title": "R.S ENERGY",
       "value": "R$ 3.855,63"
+    },
+    {
+      "title": "BRF",
+      "value": "R$ 326,77"
+    },
+    {
+      "title": "BRF",
+      "value": "R$ 229,11"
     }
   ],
   "2025-09-28": [
@@ -347,14 +446,30 @@
   ],
   "2025-09-30": [
     {
+      "title": "TIROL",
+      "value": "R$ 1.068,02"
+    },
+    {
       "title": "GIANINA",
       "value": "R$ 354,17"
+    },
+    {
+      "title": "BEATRIZ RIBEIRO JF DOCES",
+      "value": "R$ 315,82"
     }
   ],
   "2025-10-01": [
     {
+      "title": "COMERCIAL ESPERANCA",
+      "value": "R$ 1.007,61"
+    },
+    {
       "title": "EDY ALIMENTOS",
       "value": "R$ 737,81"
+    },
+    {
+      "title": "FFRR DISTRIB.",
+      "value": "R$ 684,72"
     },
     {
       "title": "FANTASTICO",
@@ -375,8 +490,16 @@
       "value": "R$ 1.095,99"
     },
     {
+      "title": "ZARAGOZA",
+      "value": "R$ 857,37"
+    },
+    {
       "title": "FFRR DISTRIB.",
       "value": "R$ 808,08"
+    },
+    {
+      "title": "RENOVA(ACETONA,CREME DE LEITE)",
+      "value": "R$ 234,71"
     }
   ],
   "2025-10-03": [
@@ -387,6 +510,16 @@
     {
       "title": "JOTACE",
       "value": "R$ 937,22"
+    },
+    {
+      "title": "TOPSERVICE",
+      "value": "R$ 282,56"
+    }
+  ],
+  "2025-10-04": [
+    {
+      "title": "LOUZADA",
+      "value": "R$ 1.275,01"
     }
   ],
   "2025-10-05": [
@@ -415,6 +548,10 @@
       "value": "R$ 1.952,72"
     },
     {
+      "title": "TIROL",
+      "value": "R$ 1.068,05"
+    },
+    {
       "title": "GIANINA",
       "value": "R$ 354,18"
     },
@@ -429,6 +566,16 @@
       "value": "R$ 220,10"
     }
   ],
+  "2025-10-09": [
+    {
+      "title": "ZARAGOZA",
+      "value": "R$ 857,37"
+    },
+    {
+      "title": "RENOVA(ACETONA,CREME DE LEITE)",
+      "value": "R$ 234,72"
+    }
+  ],
   "2025-10-10": [
     {
       "title": "EXPERIMENTAL DANCE",
@@ -437,6 +584,10 @@
     {
       "title": "IPTU",
       "value": "R$ 439,68"
+    },
+    {
+      "title": "TOPSERVICE",
+      "value": "R$ 282,55"
     },
     {
       "title": "IPTU",
