@@ -21,7 +21,9 @@ body{
   display:flex;
   justify-content:center;
   padding:20px;
+  position:relative;
 }
+
 html { overflow-y: scroll; }
 .wrap{ width:100%; max-width:420px; }
 .card{
@@ -138,9 +140,33 @@ html { overflow-y: scroll; }
   background:#f0f0f0;
   border:2px solid var(--accent);
 }
+
+/* Splash Screen */
+#splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#splash img {
+  width: 150px;
+  height: auto;
+}
+
 </style>
 </head>
 <body>
+<div id="splash">
+  <img src="logo.png" alt="Logo"> <!-- Substitua com o caminho para o seu logo -->
+</div>
+
 <div class="wrap">
   <div class="card">
     <div class="header">
@@ -183,12 +209,20 @@ const monthTitle = document.getElementById('monthTitle');
 const eventList = document.getElementById('eventList');
 const totalsEl = document.getElementById('totals');
 
-fetch('boletos.json')
+// Adicionando um parâmetro aleatório para evitar o cache
+fetch('boletos.json?' + new Date().getTime())
   .then(resp => resp.json())
   .then(data => {
     eventsData = data;
     renderCalendar(viewMonth, viewYear);
     updateTotals();
+
+    // Esconde a splash screen após o carregamento do JSON
+    document.getElementById('splash').style.display = 'none';
+  })
+  .catch(error => {
+    console.error('Erro ao carregar o JSON', error);
+    document.getElementById('splash').innerHTML = 'Erro ao carregar os dados.';
   });
 
 function formatDateKey(y,m,d){
@@ -285,10 +319,7 @@ function showEvents(dateKey, clickedDate){
   events.forEach(ev=>{
     const card=document.createElement('div');
     card.className='card-event';
-    card.innerHTML=`
-      <div class="title-ev">${ev.title}</div>
-      <div class="value-ev">${parseBRLToNumber(ev.value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}</div>
-    `;
+    card.innerHTML=`<div class="title-ev">${ev.title}</div><div class="value-ev">${parseBRLToNumber(ev.value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}</div>`;
     card.addEventListener('click', ()=>{
       if(selectedCard) selectedCard.classList.remove('selected');
       card.classList.add('selected');
@@ -301,13 +332,11 @@ function showEvents(dateKey, clickedDate){
 }
 
 function updateTotals(clickedDate){
-  // Soma geral
   let totalAll = 0;
   for(const key in eventsData){
     totalAll += sumDay(eventsData[key]);
   }
 
-  // Soma semana corrente (terça → próxima segunda)
   if(!clickedDate) clickedDate = today;
 
   let startWeek = new Date(clickedDate);
