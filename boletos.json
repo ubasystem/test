@@ -13,8 +13,16 @@
       "value": "R$ 1.472,82"
     },
     {
+      "title": "VITOR DOCES 2° VIA",
+      "value": "R$ 1.161,00"
+    },
+    {
       "title": "FRIGOESTRELA",
       "value": "R$ 1.001,03"
+    },
+    {
+      "title": "SALGADOS TIA LENA",
+      "value": "R$ 905,00"
     },
     {
       "title": "HORT FRUIT",
@@ -67,12 +75,28 @@
   ],
   "2025-09-17": [
     {
+      "title": "MARQUESPAN",
+      "value": "R$ 3.272,11"
+    },
+    {
+      "title": "BRF",
+      "value": "R$ 1.370,94"
+    },
+    {
+      "title": "SERRAMAR",
+      "value": "R$ 1.126,76"
+    },
+    {
       "title": "COMERCIAL ESPERANCA",
       "value": "R$ 1.007,61"
     },
     {
       "title": "JOTACE",
       "value": "R$ 978,00"
+    },
+    {
+      "title": "MARTINS",
+      "value": "887,17"
     },
     {
       "title": "ZARAGOZA",
@@ -87,12 +111,20 @@
       "value": "R$ 690,04"
     },
     {
+      "title": "BRF",
+      "value": "R$ 649,14"
+    },
+    {
       "title": "JOTACE",
       "value": "R$ 534,33"
     },
     {
       "title": "SABOROSA",
       "value": "R$ 528,80"
+    },
+    {
+      "title": "DISK GAS",
+      "value": "R$ 515,00"
     },
     {
       "title": "JOTACE",
@@ -111,12 +143,20 @@
       "value": "R$ 435,56"
     },
     {
+      "title": "MARCILIO GASPAR",
+      "value": "R$ 391,00"
+    },
+    {
       "title": "MINERVA",
       "value": "R$ 388,24"
     },
     {
       "title": "MINERVA",
       "value": "R$ 282,00"
+    },
+    {
+      "title": "Z&Z DISTRIB.",
+      "value": "R$ 248,91"
     },
     {
       "title": "JBS",
@@ -133,9 +173,18 @@
       "value": "R$ 1.967,00"
     },
     {
+      "title": "IMARUI",
+      "value": "R$ 1.567,89"
+    },
+    {
+      "title": "ZARAGOZA",
+      "value": "R$ 1.507,44"
+    },
+    {
       "title": "ACOUGUE",
       "value": "R$ 1.357,46"
-    },{
+    },
+    {
       "title": "ULTRAGAZ",
       "value": "R$ 1.339,04"
     },
@@ -176,6 +225,10 @@
       "value": "R$ 229,64"
     },
     {
+      "title": "ALPI",
+      "value": "R$ 214,72"
+    },
+    {
       "title": "LUZ TIA LENA",
       "value": "R$ 164,60"
     }
@@ -188,6 +241,10 @@
     {
       "title": "FGTS",
       "value": "R$ 2.094,56"
+    },
+    {
+      "title": "PANCO",
+      "value": "R$ 1.473,75"
     },
     {
       "title": "COMPRE FACIL",
@@ -210,11 +267,23 @@
       "value": "R$ 502,55"
     },
     {
+      "title": "SANTA RITA",
+      "value": "R$ 492,00"
+    },
+    {
       "title": "FERMAGAM DO VALLE",
       "value": "R$ 474,05"
+    },
+    {
+      "title": "UNIAO EMBALAGENS",
+      "value": "R$ 210,88"
     }
   ],
   "2025-09-20": [
+    {
+      "title": "GUEDES E CRUZ  01/17",
+      "value": "R$ 1.100,00"
+    },
     {
       "title": "BRF",
       "value": "R$ 326,68"
@@ -232,6 +301,12 @@
       "value": "R$ 229,05"
     }
   ],
+  "2025-09-21": [
+    {
+      "title": "JTI CIGARROS",
+      "value": "R$ 114,76"
+    }
+  ],
   "2025-09-22": [
     {
       "title": "ZANCHETTA",
@@ -240,6 +315,14 @@
     {
       "title": "BRF",
       "value": "R$ 1.510,03"
+    },
+    {
+      "title": "BRF",
+      "value": "R$ 1.370,94"
+    },
+    {
+      "title": "BRF",
+      "value": "R$ 649,14"
     },
     {
       "title": "UNIVALE",
@@ -268,6 +351,10 @@
       "value": "R$ 2.314,00"
     },
     {
+      "title": "COCA",
+      "value": "R$ 2.220,54"
+    },
+    {
       "title": "FFRR DISTRIB.",
       "value": "R$ 1.436,04"
     },
@@ -288,6 +375,10 @@
       "value": "R$ 1.001,03"
     },
     {
+      "title": "PANCO",
+      "value": "R$ 601,02"
+    },
+    {
       "title": "ACAI MIX",
       "value": "R$ 512,43"
     },
@@ -302,9 +393,21 @@
     {
       "title": "PAES KIM MAGALHAES",
       "value": "R$ 294,93"
+    },
+    {
+      "title": "PANCO",
+      "value": "R$ 252,00"
+    },
+    {
+      "title": "COMEVAP",
+      "value": "R$ 220,94"
     }
   ],
   "2025-09-24": [
+    {
+      "title": "FRONERI",
+      "value": "R$ 1.458,66"
+    },
     {
       "title": "COMERCIAL ESPERANCA",
       "value": "R$ 1.007,61"
@@ -338,6 +441,10 @@
       "value": "R$ 388,24"
     },
     {
+      "title": "ARAUJO EMBALAGENS",
+      "value": "R$ 349,14"
+    },
+    {
       "title": "REBORDAM",
       "value": "R$ 266,62"
     },
@@ -348,6 +455,10 @@
     {
       "title": "JBS",
       "value": "R$ 211,01"
+    },
+    {
+      "title": "ALPI",
+      "value": "R$ 173,26"
     }
   ],
   "2025-09-25": [
@@ -368,6 +479,14 @@
       "value": "R$ 1.027,26"
     },
     {
+      "title": "FRIGOESTRELA",
+      "value": "R$ 946,52"
+    },
+    {
+      "title": "M & M IMPERIO",
+      "value": "R$ 913,76"
+    },
+    {
       "title": "NESTLE",
       "value": "R$ 872,36"
     },
@@ -376,12 +495,24 @@
       "value": "R$ 857,24"
     },
     {
+      "title": "LACTVIT 1/4",
+      "value": "R$ 737,90"
+    },
+    {
       "title": "PRODUTOS NATURAIS MILTON",
       "value": "R$ 645,09"
     },
     {
       "title": "EXPERIMENTAL DANCE",
       "value": "R$ 545,00"
+    },
+    {
+      "title": "MMD DISTRIB.",
+      "value": "R$ 432,97"
+    },
+    {
+      "title": "LUCIMARI?",
+      "value": "R$ 390,00"
     },
     {
       "title": "ROMMAC DISTRIB.",
@@ -394,8 +525,28 @@
   ],
   "2025-09-26": [
     {
+      "title": "PHILIP MORRIS",
+      "value": "R$ 2.686,94"
+    },
+    {
       "title": "COMPRE FACIL",
       "value": "R$ 2.225,70"
+    },
+    {
+      "title": "CBB DISTRIB.",
+      "value": "R$ 1.419,84"
+    },
+    {
+      "title": "COMERCIAL ESPERANCA",
+      "value": "R$ 1.314,60"
+    },
+    {
+      "title": "VITOR DOCES",
+      "value": "R$ 1.194,00"
+    },
+    {
+      "title": "JTI CIGARROS",
+      "value": "R$ 1.120,84"
     },
     {
       "title": "JOTACE",
@@ -420,15 +571,27 @@
       "value": "R$ 3.855,63"
     },
     {
+      "title": "VIGOR M&F",
+      "value": "R$ 440,66"
+    },
+    {
       "title": "BRF",
       "value": "R$ 326,77"
     },
     {
       "title": "BRF",
       "value": "R$ 229,11"
+    },
+    {
+      "title": "PETROPOLIS",
+      "value": "R$ 142,89"
     }
   ],
   "2025-09-28": [
+    {
+      "title": "SICREDI",
+      "value": "R$ 1.727,44"
+    },
     {
       "title": "TRIUNFANTE",
       "value": "R$ 142,56"
@@ -436,18 +599,54 @@
   ],
   "2025-09-29": [
     {
+      "title": "BRF",
+      "value": "R$ 1.371,36"
+    },
+    {
+      "title": "MILI 01",
+      "value": "R$ 774,19"
+    },
+    {
+      "title": "BRF",
+      "value": "R$ 649,33"
+    },
+    {
       "title": "SEARA",
       "value": "R$ 381,18"
     },
     {
       "title": "UNIVALE",
       "value": "R$ 374,60"
+    },
+    {
+      "title": "ARCOM 1/3",
+      "value": "R$ 307,68"
+    },
+    {
+      "title": "ARAUJO EMBALAGENS",
+      "value": "R$ 260,79"
     }
   ],
   "2025-09-30": [
     {
       "title": "TIROL",
       "value": "R$ 1.068,02"
+    },
+    {
+      "title": "FRIGOESTRELA 1/3",
+      "value": "R$ 763,24"
+    },
+    {
+      "title": "LACTVIT 2/4",
+      "value": "R$ 744,82"
+    },
+    {
+      "title": "PAES KIM MAGALHAES",
+      "value": "R$ 482,82"
+    },
+    {
+      "title": "FRIGOESTRELA 1/3",
+      "value": "R$ 356,35"
     },
     {
       "title": "GIANINA",
@@ -459,6 +658,10 @@
     }
   ],
   "2025-10-01": [
+    {
+      "title": "COMPRE FACIL",
+      "value": "R$ 1.157,13"
+    },
     {
       "title": "COMERCIAL ESPERANCA",
       "value": "R$ 1.007,61"
@@ -482,12 +685,20 @@
   ],
   "2025-10-02": [
     {
+      "title": "JBS",
+      "value": "R$ 1.717,04"
+    },
+    {
       "title": "ACOUGUE",
       "value": "R$ 1.357,45"
     },
     {
       "title": "ZARAGOZA",
       "value": "R$ 1.095,99"
+    },
+    {
+      "title": "FRIGOESTRELA",
+      "value": "R$ 946,52"
     },
     {
       "title": "ZARAGOZA",
@@ -498,18 +709,42 @@
       "value": "R$ 808,08"
     },
     {
+      "title": "LACTVIT 3/4",
+      "value": "R$ 737,90"
+    },
+    {
+      "title": "SALVATI",
+      "value": "R$ 518,91"
+    },
+    {
+      "title": "MMD DISTRIB.",
+      "value": "R$ 432,98"
+    },
+    {
       "title": "RENOVA(ACETONA,CREME DE LEITE)",
       "value": "R$ 234,71"
     }
   ],
   "2025-10-03": [
     {
+      "title": "PETROPOLIS",
+      "value": "R$ 1.393,85"
+    },
+    {
       "title": "JOTACE",
       "value": "R$ 1.238,53"
     },
     {
+      "title": "CBB DISTRIB.",
+      "value": "R$ 1.184,84"
+    },
+    {
       "title": "JOTACE",
       "value": "R$ 937,22"
+    },
+    {
+      "title": "SUPERROGER",
+      "value": "R$ 688,50"
     },
     {
       "title": "TOPSERVICE",
@@ -534,8 +769,20 @@
   ],
   "2025-10-06": [
     {
+      "title": "JOTACE",
+      "value": "R$ 1.887,99"
+    },
+    {
       "title": "ATHENA (SACO DE LIXO)",
       "value": "R$ 1.257,50"
+    },
+    {
+      "title": "MILI 02",
+      "value": "R$ 774,20"
+    },
+    {
+      "title": "CBB DISTRIB.",
+      "value": "R$ 695,51"
     },
     {
       "title": "UNIVALE",
@@ -548,8 +795,20 @@
       "value": "R$ 1.952,72"
     },
     {
+      "title": "PEPSICO",
+      "value": "R$ 1.500,16"
+    },
+    {
       "title": "TIROL",
       "value": "R$ 1.068,05"
+    },
+    {
+      "title": "FRIGOESTRELA 2/3",
+      "value": "R$ 763,25"
+    },
+    {
+      "title": "FRIGOESTRELA 2/3",
+      "value": "R$ 356,36"
     },
     {
       "title": "GIANINA",
@@ -562,14 +821,34 @@
   ],
   "2025-10-08": [
     {
+      "title": "JOTACE",
+      "value": "R$ 1.680,37"
+    },
+    {
+      "title": "COMPRE FACIL",
+      "value": "R$ 1.157,14"
+    },
+    {
       "title": "REBORDAM",
       "value": "R$ 220,10"
     }
   ],
   "2025-10-09": [
     {
+      "title": "FRIGOESTRELA",
+      "value": "R$ 946,52"
+    },
+    {
       "title": "ZARAGOZA",
       "value": "R$ 857,37"
+    },
+    {
+      "title": "LACTVIT 4/4",
+      "value": "R$ 737,91"
+    },
+    {
+      "title": "GIANINA",
+      "value": "R$ 384,33"
     },
     {
       "title": "RENOVA(ACETONA,CREME DE LEITE)",
@@ -577,6 +856,10 @@
     }
   ],
   "2025-10-10": [
+    {
+      "title": "CBB DISTRIB.",
+      "value": "R$ 1.184,83"
+    },
     {
       "title": "EXPERIMENTAL DANCE",
       "value": "R$ 610,50"
@@ -596,17 +879,49 @@
   ],
   "2025-10-13": [
     {
+      "title": "CBB DISTRIB.",
+      "value": "R$ 695,50"
+    },
+    {
       "title": "UNIVALE",
       "value": "R$ 374,60"
+    }
+  ],
+  "2025-10-14": [
+    {
+      "title": "FRIGOESTRELA 3/3",
+      "value": "R$ 763,25"
+    },
+    {
+      "title": "FRIGOESTRELA 3/3",
+      "value": "R$ 356,36"
+    },
+    {
+      "title": "ARCOM 2/3",
+      "value": "R$ 307,68"
     }
   ],
   "2025-10-15": [
     {
       "title": "R.S ENERGY",
       "value": "R$ 3.855,63"
+    },
+    {
+      "title": "COMPRE FACIL",
+      "value": "R$ 1.157,14"
+    }
+  ],
+  "2025-10-16": [
+    {
+      "title": "GIANINA",
+      "value": "R$ 384,34"
     }
   ],
   "2025-10-20": [
+    {
+      "title": "GUEDES E CRUZ  02/17",
+      "value": "R$ 1.100,00"
+    },
     {
       "title": "JOSE CEZAR BRINQUEDOS",
       "value": "R$ 502,55"
@@ -628,6 +943,12 @@
     {
       "title": "R.S ENERGY",
       "value": "R$ 3.855,63"
+    }
+  ],
+  "2025-10-29": [
+    {
+      "title": "ARCOM 3/3",
+      "value": "R$ 307,70"
     }
   ],
   "2025-11-05": [
@@ -668,6 +989,12 @@
     {
       "title": "R.S ENERGY",
       "value": "R$ 3.855,63"
+    }
+  ],
+  "2025-11-20": [
+    {
+      "title": "GUEDES E CRUZ  03/17",
+      "value": "R$ 1.100,00"
     }
   ],
   "2025-11-25": [
@@ -726,6 +1053,12 @@
     {
       "title": "R.S ENERGY",
       "value": "R$ 3.855,63"
+    }
+  ],
+  "2025-12-20": [
+    {
+      "title": "GUEDES E CRUZ  04/17",
+      "value": "R$ 1.100,00"
     }
   ],
   "2025-12-27": [
