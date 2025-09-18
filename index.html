@@ -23,7 +23,6 @@ body{
   padding:20px;
   position:relative;
 }
-
 html { overflow-y: scroll; }
 .wrap{ width:100%; max-width:420px; }
 .card{
@@ -148,7 +147,7 @@ html { overflow-y: scroll; }
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -159,12 +158,13 @@ html { overflow-y: scroll; }
   width: 150px;
   height: auto;
 }
-
 </style>
 </head>
 <body>
+
+<!-- Splash Screen -->
 <div id="splash">
-  <img src="logo.png" alt="Logo"> <!-- Substitua com o caminho para o seu logo -->
+  <img src="logo.png" alt="Carregando..."> <!-- Substitua logo.png pelo seu caminho -->
 </div>
 
 <div class="wrap">
@@ -202,28 +202,11 @@ const today = new Date();
 let viewMonth = today.getMonth();
 let viewYear = today.getFullYear();
 
-const monthNames = ["janeiro","fevereiro","março","abril","maio","junho",
-                    "julho","agosto","setembro","outubro","novembro","dezembro"];
+const monthNames = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
 const grid = document.getElementById('calendarGrid');
 const monthTitle = document.getElementById('monthTitle');
 const eventList = document.getElementById('eventList');
 const totalsEl = document.getElementById('totals');
-
-// Adicionando um parâmetro aleatório para evitar o cache
-fetch('boletos.json?' + new Date().getTime())
-  .then(resp => resp.json())
-  .then(data => {
-    eventsData = data;
-    renderCalendar(viewMonth, viewYear);
-    updateTotals();
-
-    // Esconde a splash screen após o carregamento do JSON
-    document.getElementById('splash').style.display = 'none';
-  })
-  .catch(error => {
-    console.error('Erro ao carregar o JSON', error);
-    document.getElementById('splash').innerHTML = 'Erro ao carregar os dados.';
-  });
 
 function formatDateKey(y,m,d){
   return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
@@ -340,7 +323,7 @@ function updateTotals(clickedDate){
   if(!clickedDate) clickedDate = today;
 
   let startWeek = new Date(clickedDate);
-  let dayOfWeek = startWeek.getDay(); // 0=domingo ... 6=sábado
+  let dayOfWeek = startWeek.getDay();
   let diffToTuesday = (dayOfWeek === 0) ? -5 : 2 - dayOfWeek; 
   startWeek.setDate(startWeek.getDate() + diffToTuesday);
 
@@ -363,6 +346,25 @@ document.getElementById('prevBtn').addEventListener('click', ()=>{
 document.getElementById('nextBtn').addEventListener('click', ()=>{
   viewMonth++; if(viewMonth>11){ viewMonth=0; viewYear++;}
   renderCalendar(viewMonth,viewYear);
+});
+
+// ======= SPLASH + JSON LOADER COMBINADO ========
+const splash = document.getElementById('splash');
+
+// Promessa do JSON + atraso de 2s
+Promise.all([
+  fetch('boletos.json?' + new Date().getTime()).then(resp => resp.json()),
+  new Promise(resolve => setTimeout(resolve, 2000))
+])
+.then(([data]) => {
+  eventsData = data;
+  splash.remove(); // remove splash screen
+  renderCalendar(viewMonth, viewYear);
+  updateTotals();
+})
+.catch(err => {
+  console.error("Erro ao carregar boletos:", err);
+  splash.innerHTML = "<p>Erro ao carregar dados.</p>";
 });
 </script>
 </body>
