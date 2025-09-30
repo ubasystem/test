@@ -1,340 +1,359 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Calendário Dinâmico</title>
-<style>
-:root{
-  --card-bg:#fff;
-  --accent:#ff4d6d;
-  --today:#eaeaea;
-  --text:#222;
-  --muted:#888;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family: Inter, system-ui, Arial;
-  background:#f3f6fb;
-  color:var(--text);
-  display:flex;
-  justify-content:center;
-  padding:20px;
-}
-html { overflow-y: scroll; }
-.wrap{ width:100%; max-width:420px; }
-.card{
-  background:var(--card-bg);
-  border-radius:18px;
-  padding:14px;
-  box-shadow:0 8px 24px rgba(20,30,50,0.08);
-}
-.header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:12px;
-}
-.nav-btn{
-  background:transparent;
-  border:none;
-  font-size:18px;
-  padding:8px;
-  border-radius:8px;
-  cursor:pointer;
-}
-.month-title{ font-weight:600; text-transform:capitalize; }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:8px;
-  align-items:stretch;
-}
-.day-name{
-  font-size:12px;
-  color:var(--muted);
-  text-align:center;
-  padding:4px 2px;
-}
-.cell{
-  min-height:58px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  padding:8px;
-  border-radius:10px;
-  transition:background .15s, transform .08s;
-  text-align:left;
-  background:#fff;
-  border:2px solid transparent;
-}
-.cell.empty{
-  background:transparent;
-  box-shadow:none;
-  pointer-events:none;
-  border:none;
-}
-.day-num{ font-weight:600; font-size:14px; color:var(--text); }
-.cell.day:hover{ background:#f5f7fb; cursor:pointer; transform:translateY(-2px); }
-.cell.today{
-  background:var(--today);
-  color:var(--text);
-  font-weight:700;
-}
-.events{
-  margin-top:14px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  min-height:120px;
-  max-height:300px;
-  overflow-y:auto;
-}
-.card-event{
-  background:#fff;
-  border-radius:10px;
-  padding:10px;
-  box-shadow:0 6px 18px rgba(20,30,50,0.04);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  width:100%;
-}
-.card-event .title-ev{ font-weight:600; font-size:14px; }
-.card-event .value-ev{ color:var(--accent); font-weight:700; }
-.no-event{ color:var(--muted); padding:8px 0; }
-.totals{
-  margin-top:10px;
-  font-weight:600;
-}
-.legend{
-  margin-top:10px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:6px;
-  font-size:12px;
-  color:var(--text);
-}
-.legend .dot{
-  display:inline-block;
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  margin-right:6px;
-}
-.legend .low{ background:#007bff; }
-.legend .medium{ background:#28a745; }
-.legend .high{ background:#dc3545; }
-.legend .no-event{ background:#ccc; }
-.card-event.selected{
-  background:#f0f0f0;
-  border:2px solid var(--accent);
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calendário Dinâmico</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <style>
+    :root {
+      --card-bg: #fff;
+      --accent: #ff4d6d;
+      --today: #eaeaea;
+      --text: #222;
+      --muted: #888;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, Arial;
+      background: #f3f6fb;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    html {
+      overflow-y: scroll;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 8px 24px rgba(20, 30, 50, 0.08);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .month-title {
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .day-name {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      padding: 4px 2px;
+    }
+
+    .cell {
+      min-height: 58px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 8px;
+      border-radius: 10px;
+      transition: background 0.15s, transform 0.08s;
+      text-align: left;
+      background: #fff;
+      border: 2px solid transparent;
+    }
+
+    .cell.empty {
+      background: transparent;
+      box-shadow: none;
+      pointer-events: none;
+      border: none;
+    }
+
+    .day-num {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .cell.day:hover {
+      background: #f5f7fb;
+      cursor: pointer;
+      transform: translateY(-2px);
+    }
+
+    .cell.today {
+      background: var(--today);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .events {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 120px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .card-event {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 6px 18px rgba(20, 30, 50, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .card-event .title-ev {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .card-event .value-ev {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .no-event {
+      color: var(--muted);
+      padding: 8px 0;
+    }
+
+    .totals {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .legend {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .legend .dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    .legend .low {
+      background: #007bff;
+    }
+
+    .legend .medium {
+      background: #28a745;
+    }
+
+    .legend .high {
+      background: #dc3545;
+    }
+
+    .legend .no-event {
+      background: #ccc;
+    }
+
+    .card-event.selected {
+      background: #f0f0f0;
+      border: 2px solid var(--accent);
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <div class="header">
-      <button class="nav-btn" id="prevBtn" type="button">◀</button>
-      <div class="month-title" id="monthTitle">—</div>
-      <button class="nav-btn" id="nextBtn" type="button">▶</button>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <button class="nav-btn" id="prevBtn" type="button">◀</button>
+        <div class="month-title" id="monthTitle">—</div>
+        <button class="nav-btn" id="nextBtn" type="button">▶</button>
+      </div>
+      <div class="grid" id="calendarGrid"></div>
     </div>
-    <div class="grid" id="calendarGrid"></div>
-  </div>
 
-  <div class="legend">
-    <div><span class="dot low"></span> Até R$ 5.000</div>
-    <div><span class="dot medium"></span> R$ 5.001 a R$ 10.000</div>
-    <div><span class="dot high"></span> Acima de R$ 10.000</div>
-    <div><span class="dot no-event"></span> Sem boletos</div>
-  </div>
+    <div class="legend">
+      <div><span class="dot low"></span> Até R$ 5.000</div>
+      <div><span class="dot medium"></span> R$ 5.001 a R$ 10.000</div>
+      <div><span class="dot high"></span> Acima de R$ 10.000</div>
+      <div><span class="dot no-event"></span> Sem boletos</div>
+    </div>
 
-  <div class="totals" id="totals">
-    Semana: R$ 0,00 | Geral: R$ 0,00
-  </div>
+    <div class="totals" id="totals">
+      Semana: R$ 0,00 | Geral: R$ 0,00
+    </div>
 
-  <div class="events">
-    <div class="list" id="eventList">
-      <div class="no-event">Selecione um dia para ver os boletos.</div>
+    <div class="events">
+      <div class="list" id="eventList">
+        <div class="no-event">Selecione um dia para ver os boletos.</div>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-let eventsData = {};
-let selectedCard = null;
-const today = new Date();
-let viewMonth = today.getMonth();
-let viewYear = today.getFullYear();
+  <script>
+    let eventsData = {};
+    let selectedCard = null;
+    const today = new Date();
+    let viewMonth = today.getMonth();
+    let viewYear = today.getFullYear();
 
-const monthNames = ["janeiro","fevereiro","março","abril","maio","junho",
-                    "julho","agosto","setembro","outubro","novembro","dezembro"];
-const grid = document.getElementById('calendarGrid');
-const monthTitle = document.getElementById('monthTitle');
-const eventList = document.getElementById('eventList');
-const totalsEl = document.getElementById('totals');
+    const monthNames = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", 
+                        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+    const grid = document.getElementById('calendarGrid');
+    const monthTitle = document.getElementById('monthTitle');
+    const eventList = document.getElementById('eventList');
+    const totalsEl = document.getElementById('totals');
 
-fetch('boletos.json')
-  .then(resp => resp.json())
-  .then(data => {
-    eventsData = data;
-    renderCalendar(viewMonth, viewYear);
-    updateTotals();
-  });
+    // Carregar o CSV usando PapaParse
+    fetch('boletos.csv')  // Altere para a URL do seu CSV no GitHub Pages
+      .then(response => response.text())
+      .then(csv => {
+        Papa.parse(csv, {
+          header: true,
+          dynamicTyping: true,
+          complete: function(results) {
+            eventsData = processCSVData(results.data);  // Função que processa os dados do CSV
+            renderCalendar(viewMonth, viewYear);
+            updateTotals();
+          }
+        });
+      });
 
-function formatDateKey(y,m,d){
-  return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-}
-
-function parseBRLToNumber(txt){
-  if (typeof txt === "number") return txt;
-  let s = String(txt).trim();
-  s = s.replace(/^R\$\s*/i, ""); 
-  s = s.replace(/[^\d,.-]/g, "");
-  if (s.includes(",") && s.includes(".")) s = s.replace(/\./g,"").replace(",",".");
-  else if(s.includes(",")) s = s.replace(",",".");
-  const n = Number(s);
-  return isNaN(n)?0:n;
-}
-
-function sumDay(events){
-  return events.reduce((acc,ev)=>{
-    const n = parseBRLToNumber(ev.value);
-    return acc + (isNaN(n)?0:n);
-  },0);
-}
-
-function renderCalendar(month, year){
-  grid.innerHTML = "";
-  monthTitle.textContent = `${monthNames[month]} ${year}`;
-  ['D','S','T','Q','Q','S','S'].forEach(d=>{
-    const el=document.createElement('div');
-    el.className='day-name';
-    el.textContent=d;
-    grid.appendChild(el);
-  });
-
-  const firstDayIndex = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month+1,0).getDate();
-
-  for(let i=0;i<firstDayIndex;i++){
-    const empty=document.createElement('div');
-    empty.className='cell empty';
-    grid.appendChild(empty);
-  }
-
-  for(let d=1; d<=daysInMonth; d++){
-    const cell = document.createElement('div');
-    cell.className='cell day';
-    const key = formatDateKey(year, month+1, d);
-    const num = document.createElement('div');
-    num.className='day-num';
-    num.textContent=d;
-    const events = eventsData[key] || [];
-    const total = sumDay(events);
-
-    if(events.length){
-      if(total <=5000) cell.style.borderColor="#007bff";
-      else if(total<=10000) cell.style.borderColor="#28a745";
-      else cell.style.borderColor="#dc3545";
-    } else cell.style.borderColor="#ccc";
-
-    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear())
-      cell.classList.add('today');
-
-    cell.appendChild(num);
-    cell.addEventListener('click', ()=> showEvents(key, new Date(year,month,d)));
-    grid.appendChild(cell);
-  }
-
-  const remainder = grid.children.length % 7;
-  if(remainder!==0){
-    for(let i=0;i<7-remainder;i++){
-      const e=document.createElement('div');
-      e.className='cell empty';
-      grid.appendChild(e);
+    function processCSVData(data) {
+      const groupedData = {};
+      data.forEach(row => {
+        const date = formatDateKey(2025, row['Data Venc']);
+        if (!groupedData[date]) {
+          groupedData[date] = [];
+        }
+        groupedData[date].push({
+          title: row['EMPRESA'],
+          value: row['Final']
+        });
+      });
+      return groupedData;
     }
-  }
-}
 
-function showEvents(dateKey, clickedDate){
-  eventList.innerHTML="";
-  const events = eventsData[dateKey] || [];
-  const totalDay = sumDay(events);
+    function formatDateKey(y, d) {
+      const [day, month] = d.split('/');
+      return `${y}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
 
-  const header = document.createElement('div');
-  header.className='no-event';
-  if(events.length){
-    header.textContent=`Boletos do dia - Total: ${totalDay.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
-  } else {
-    header.textContent=`Boletos do dia - Total: ${totalDay.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})} (Nenhum boleto)`;
-  }
-  eventList.appendChild(header);
+    function sumDay(events) {
+      return events.reduce((acc, ev) => {
+        const n = parseBRLToNumber(ev.value);
+        return acc + (isNaN(n) ? 0 : n);
+      }, 0);
+    }
 
-  if(!events.length) return;
+    function parseBRLToNumber(txt) {
+      let s = String(txt).trim();
+      s = s.replace(/^R\$\s*/i, ""); 
+      s = s.replace(/[^\d,.-]/g, "");
+      if (s.includes(",") && s.includes(".")) s = s.replace(/\./g, "").replace(",", ".");
+      else if(s.includes(",")) s = s.replace(",", ".");
+      const n = Number(s);
+      return isNaN(n) ? 0 : n;
+    }
 
-  events.forEach(ev=>{
-    const card=document.createElement('div');
-    card.className='card-event';
-    card.innerHTML=`
-      <div class="title-ev">${ev.title}</div>
-      <div class="value-ev">${parseBRLToNumber(ev.value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}</div>
-    `;
-    card.addEventListener('click', ()=>{
-      if(selectedCard) selectedCard.classList.remove('selected');
-      card.classList.add('selected');
-      selectedCard = card;
-    });
-    eventList.appendChild(card);
-  });
+    function renderCalendar(month, year) {
+      grid.innerHTML = '';
+      monthTitle.innerHTML = `${monthNames[month]} ${year}`;
 
-  updateTotals(clickedDate);
-}
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
+      const daysInMonth = [...Array(lastDate).keys()].map(i => i + 1);
 
-function updateTotals(clickedDate){
-  // Soma geral
-  let totalAll = 0;
-  for(const key in eventsData){
-    totalAll += sumDay(eventsData[key]);
-  }
+      daysInMonth.forEach((day) => {
+        const cell = document.createElement('div');
+        const dayKey = formatDateKey(year, `${String(month + 1).padStart(2, '0')}/${String(day).padStart(2, '0')}`);
+        const events = eventsData[dayKey] || [];
 
-  // Soma semana corrente (terça → próxima segunda)
-  if(!clickedDate) clickedDate = today;
+        cell.classList.add('cell', 'day');
+        cell.innerHTML = `<div class="day-num">${day}</div>`;
+        
+        if (events.length > 0) {
+          const value = sumDay(events);
+          const eventText = `${events[0].title} - R$ ${value.toFixed(2).replace('.', ',')}`;
+          cell.innerHTML += `<div class="events">${eventText}</div>`;
+        }
 
-  let startWeek = new Date(clickedDate);
-  let dayOfWeek = startWeek.getDay(); // 0=domingo ... 6=sábado
-  let diffToTuesday = (dayOfWeek === 0) ? -5 : 2 - dayOfWeek; 
-  startWeek.setDate(startWeek.getDate() + diffToTuesday);
+        cell.onclick = () => selectDay(dayKey);
 
-  let endWeek = new Date(startWeek);
-  endWeek.setDate(startWeek.getDate() + 6);
+        grid.appendChild(cell);
+      });
+    }
 
-  let totalWeek = 0;
-  for(let d=new Date(startWeek); d<=endWeek; d.setDate(d.getDate()+1)){
-    const key = formatDateKey(d.getFullYear(), d.getMonth()+1, d.getDate());
-    totalWeek += sumDay(eventsData[key] || []);
-  }
+    function selectDay(dayKey) {
+      const events = eventsData[dayKey] || [];
+      eventList.innerHTML = '';
 
-  totalsEl.textContent = `Semana: ${totalWeek.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})} | Geral: ${totalAll.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
-}
+      if (events.length === 0) {
+        eventList.innerHTML = '<div class="no-event">Sem boletos.</div>';
+      } else {
+        events.forEach(ev => {
+          const eventCard = document.createElement('div');
+          eventCard.classList.add('card-event');
+          eventCard.innerHTML = `
+            <div class="title-ev">${ev.title}</div>
+            <div class="value-ev">R$ ${parseBRLToNumber(ev.value).toFixed(2).replace('.', ',')}</div>
+          `;
+          eventList.appendChild(eventCard);
+        });
+      }
+    }
 
-document.getElementById('prevBtn').addEventListener('click', ()=>{
-  viewMonth--; if(viewMonth<0){ viewMonth=11; viewYear--;}
-  renderCalendar(viewMonth,viewYear);
-});
-document.getElementById('nextBtn').addEventListener('click', ()=>{
-  viewMonth++; if(viewMonth>11){ viewMonth=0; viewYear++;}
-  renderCalendar(viewMonth,viewYear);
-});
-</script>
+    function updateTotals() {
+      const selectedEvents = selectedCard ? eventsData[selectedCard] : [];
+      const weekSum = selectedEvents.reduce((sum, ev) => sum + parseBRLToNumber(ev.value), 0);
+      const totalSum = Object.values(eventsData).reduce((sum, events) => sum + events.reduce((s, ev) => s + parseBRLToNumber(ev.value), 0), 0);
+
+      totalsEl.innerHTML = `Semana: R$ ${weekSum.toFixed(2).replace('.', ',')} | Geral: R$ ${totalSum.toFixed(2).replace('.', ',')}`;
+    }
+  </script>
 </body>
 </html>
